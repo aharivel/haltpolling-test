@@ -1,0 +1,23 @@
+## SUT baseline — panther04, captured 2026-06-25
+
+Host: Intel Xeon E5-2630 v3 (Haswell-EP), 2S × 8C/16T, SMT ON
+OS: CentOS Stream 9, kernel 5.14.0-710.el9.x86_64
+cpuidle driver: intel_idle
+intel_pstate: passive (set by tuned cpu-partitioning-powersave)
+
+Isolation: isolcpus=2-15,18-31 nohz_full=2-15,18-31 rcu_nocbs=2-15,18-31
+Housekeeping: 0,1,16,17
+
+C-state exit latencies (cpu0):
+  POLL   lat=0     us  resid=0    us
+  C1     lat=2     us  resid=2    us
+  C1E    lat=10    us  resid=20   us
+  C3     lat=33    us  resid=100  us
+  C6     lat=133   us  resid=400  us
+
+halt_poll_ns default: 200000 (200 µs) — covers ~1.5× C6 exit latency
+
+VM: halt-test, 8 vCPU, 4G RAM, CentOS Stream 9 cloud image
+vCPU pinning (node0): 0→2, 1→4, 2→6, 3→8, 4→10, 5→12, 6→14, 7→18
+emulatorpin: 3,5,7 (node1)
+numatune: strict nodeset=0 (config, applied on restart)
