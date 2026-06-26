@@ -12,7 +12,7 @@ read_halt(){ for f in halt_exits halt_attempted_poll halt_successful_poll halt_p
   printf '%s %s\n' "$f" "$(cat "$KVMD/$f")"; done; }
 
 read_halt > "$OUT/halt.t0"
-python power_monitor.py > "$OUT/power.csv" 2>&1 & PM=$!
+python /root/power-measurement-toolkit/power_monitor.py > "$OUT/power.csv" 2>&1 & PM=$!
 # --Summary => one system-summary row per interval (easy to parse):
 turbostat --interval 5 --quiet --Summary \
   --show PkgWatt,RAMWatt,Busy%,Bzy_MHz,CPU%c1,CPU%c6,Pkg%pc2,Pkg%pc6,CoreTmp \
