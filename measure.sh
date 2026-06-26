@@ -31,7 +31,17 @@ echo "[measure] sleep done, stopping collectors"
 
 kill -INT "$PM" 2>/dev/null || true
 kill "$TS" 2>/dev/null || true
-wait 2>/dev/null || true
+sleep 2
+# SIGTERM fallback if SIGINT didn't work
+kill "$PM" 2>/dev/null || true
+kill "$TS" 2>/dev/null || true
+sleep 1
+# Force kill as last resort
+kill -9 "$PM" 2>/dev/null || true
+kill -9 "$TS" 2>/dev/null || true
+wait "$PM" 2>/dev/null || true
+wait "$TS" 2>/dev/null || true
+echo "[measure] collectors stopped"
 
 read_halt > "$OUT/halt.t1"
 join "$OUT/halt.t0" "$OUT/halt.t1" | awk '{printf "%-26s %d\n",$1,$3-$2}' > "$OUT/halt.delta"
