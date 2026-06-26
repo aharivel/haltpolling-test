@@ -49,7 +49,7 @@ echo ""
 echo "===== HP-3: busy-poll negative control ====="
 echo "Starting spinners on all 8 guest vCPUs..."
 ssh -o StrictHostKeyChecking=no root@$GUEST_IP \
-  'for c in 0 1 2 3 4 5 6 7; do taskset -c $c sh -c "while :; do :; done" & done'
+  'nohup sh -c "for c in 0 1 2 3 4 5 6 7; do taskset -c \$c sh -c \"while :; do :; done\" & done" </dev/null >/dev/null 2>&1 &'
 sleep 10  # let spinners stabilize
 echo "Starting HP-3 at $(date)"
 ./run_cell.sh hp3_busypoll 300
